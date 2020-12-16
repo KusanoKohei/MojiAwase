@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdced505a59e39d4291d6076b6de5131, type: 3}
+  m_Name: "\u3044"
+  m_EditorClassIdentifier: 
+  param:
+  - ID: 1
+    Rank: 0
+    Sprite: a
+    Text: A
+  - ID: 2
+    Rank: 0
+    Sprite: b
+    Text: B
+  - ID: 3
+    Rank: 0
+    Sprite: c
+    Text: C
+  - ID: 4
+    Rank: 1
+    Sprite: d
+    Text: D
+  - ID: 5
+    Rank: 1
+    Sprite: e
+    Text: E
+  - ID: 6
+    Rank: 1
+    Sprite: f
+    Text: F
+  - ID: 7
+    Rank: 1
+    Sprite: g
+    Text: G
+  - ID: 8
+    Rank: 1
+    Sprite: h
+    Text: H
+  - ID: 9
+    Rank: 2
+    Sprite: i
+    Text: I
+  - ID: 10
+    Rank: 2
+    Sprite: j
+    Text: J
+  - ID: 11
+    Rank: 2
+    Sprite: k
+    Text: K
+  - ID: 12
+    Rank: 2
+    Sprite: l
+    Text: L
+  - ID: 13
+    Rank: 2
+    Sprite: m
+    Text: M
+  - ID: 14
+    Rank: 2
+    Sprite: n
+    Text: N
+  - ID: 15
+    Rank: 2
+    Sprite: o
+    Text: O
+  - ID: 16
+    Rank: 2
+    Sprite: p
+    Text: P
+  - ID: 17
+    Rank: 2
+    Sprite: q
+    Text: Q
+  - ID: 18
+    Rank: 2
+    Sprite: r
+    Text: R
