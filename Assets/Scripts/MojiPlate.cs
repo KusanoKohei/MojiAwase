@@ -99,17 +99,25 @@ public class MojiPlate : MonoBehaviour,IBeginDragHandler, IDragHandler,IDropHand
             if (mojiSlot.rank == 0)
             {
                 Debug.Log("Excellent !!");
+
+                AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[3]); // 1020.
                 DialogManager.instance.dialogText.text = "大正解！";
             }
             else if (mojiSlot.rank == 1)
             {
                 Debug.Log("Correct");
+
+                AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[1]); // 0007.
                 DialogManager.instance.dialogText.text = "せいか～い";
             }
             else if (mojiSlot.rank == 2)
             {
                 Debug.Log("incorrect lol");
+
+                AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[2]); // 1243.
                 DialogManager.instance.dialogText.text = "それじゃない!!! lol";
+
+                SetMojiBan.instance.CanvasShake();
             }
             else
             {

@@ -35,16 +35,20 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mojiPlate = FindObjectOfType<MojiPlate>();
-        themeMoji = mojiPlate.SetMojiPlate();
-        
-        SetMojiBan.instance.SortFromMojiData(themeMoji);
+        // 効果音；スタート.
+        AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[0]);
+
         OnClick();
     }
     
     public void OnClick()
     {
-        //SetMojiBan.instance.DividRank(DataLoader.instance.LoadForSetMojiban(themeMoji));
+        mojiPlate = FindObjectOfType<MojiPlate>();
+        themeMoji = mojiPlate.SetMojiPlate();
+
+        SetMojiBan.instance.SortFromMojiData(themeMoji);
+
+        // SetMojiBan.instance.DividRank(DataLoader.instance.LoadForSetMojiban(themeMoji));
     }
 
     public MojiDataGeneral MojiDataLoad()

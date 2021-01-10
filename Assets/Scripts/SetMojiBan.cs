@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class SetMojiBan : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class SetMojiBan : MonoBehaviour
 
     // private MojiPlateParameter mojiParam;
 
+    [SerializeField]   
+    private GameObject setMojiBan;
 
     [SerializeField]
     private List<SelectedMojiPlate> rank0List;
@@ -59,7 +62,8 @@ public class SetMojiBan : MonoBehaviour
     List<string> selectedSprite = new List<string>();
     [SerializeField]
     List<SelectedMojiPlate> summarySelected;
-    
+
+
     public List<int> integralNum = new List<int>();
     public List<int> randomNum = new List<int>();
 
@@ -69,6 +73,8 @@ public class SetMojiBan : MonoBehaviour
 
     public void SortFromMojiData(string themeMoji)
     {
+        summarySelected = new List<SelectedMojiPlate>(GameManager.instance.mojiImgList.Count);
+
         mojiParam = gameManager.MojiDataLoad();
         // themeMoji を参照し、Rank_0_Text_0とRank_0_Text_1から、頭文字がthemeMojiと一致するものを定数文拾う.
         string kataMoji = GameManager.KatakanaConvert(themeMoji);
@@ -197,66 +203,54 @@ public class SetMojiBan : MonoBehaviour
                 }
             }
         }
-        
-        ChusenRank0();
-        ChusenRank1();
-        ChusenRank2();
+
+        ChusenList();
 
         SortMojiBan();
     }
 
-    private void ChusenRank0()
+    private void ChusenList()
     {
-        for (int i = 0; i < rank0_kazu; i++)
+        for(int i=0; i<rank0_kazu; i++)
         {
             int r = Random.Range(0, rank0List.Count);
-            
-            selectedRank0.Add(rank0List[r]);
-        }
-    }
+            summarySelected.Add(rank0List[r]);
 
-    private void ChusenRank1()
-    {
-        for (int i = 0; i < rank1_kazu; i++)
+            i += CheckDaburi(rank0List[r].id);
+        }
+
+        for(int i=0; i<rank1_kazu; i++)
         {
             int r = Random.Range(0, rank1List.Count);
-            selectedRank1.Add(rank1List[r]);
-            
-            i += CheckDaburi(i, selectedRank1[i].id, selectedRank1);
-        }
-    }
+            summarySelected.Add(rank1List[r]);
 
-    private void ChusenRank2()
-    {
-        for (int i = 0; i < rank2_kazu; i++)
+            i += CheckDaburi(rank1List[r].id);
+        }
+
+        for(int i=0; i<rank2_kazu; i++)
         {
             int r = Random.Range(0, rank2List.Count);
-            
-            selectedRank2.Add(rank2List[r]);
-            
-            i += CheckDaburi(i, selectedRank2[i].id, selectedRank2);
-            // numOfRank2.RemoveAt(r); // 選択された要素がだぶらないように選択された要素を省く.
+            summarySelected.Add(rank2List[r]);
+
+            i += CheckDaburi(rank2List[r].id);
         }
     }
 
-
-    private int CheckDaburi(int num, int id, List<SelectedMojiPlate> selectedRank)
+    private int CheckDaburi(int id)
     {
-        if (num >= 1)
+        for (int i = 0; i < summarySelected.Count - 1; i++)
         {
-            for (int i = 0; i < selectedRank.Count - 1; i++)
+            if (id == summarySelected[i].id)
             {
-                if (id == selectedRank[i].id)
-                {
-                    Debug.Log("重複しました");
-                    selectedRank.RemoveAt(num);
-                    return -1;
-                }
+                Debug.Log("重複しました");
+                summarySelected.RemoveAt(summarySelected.Count-1);
+                return -1;
             }
         }
+
         return 0;
     }
-
+    
 
     private void SortMojiBan()
     {
@@ -275,28 +269,9 @@ public class SetMojiBan : MonoBehaviour
             
             integralNum.RemoveAt(num);
         }
-
-        summarySelected = new List<SelectedMojiPlate>(gameManager.mojiImgList.Count);
-        
-        foreach(var sec in selectedRank0)
-        {
-            summarySelected.Add(sec);
-        }
-
-        foreach(var sec in selectedRank1)
-        {
-            summarySelected.Add(sec);
-        }
-
-        foreach(var sec in selectedRank2)
-        {
-            summarySelected.Add(sec);
-        }
-
         
         for(int i=0; i<summarySelected.Count; i++)
         {
-            //Debug.Log(randomNum[i]);
             summarySelected[i].junban = randomNum[i];
         }
 
@@ -327,7 +302,6 @@ public class SetMojiBan : MonoBehaviour
         }
     }
    
-
     private void ResetMojiBan()
     {
         selectedRank0.Clear();
@@ -338,5 +312,11 @@ public class SetMojiBan : MonoBehaviour
 
         integralNum.Clear();
         randomNum.Clear();
+    }
+
+    public void CanvasShake()
+    {
+        Debug.Log("揺れる指示、出てます！");
+        setMojiBan.transform.DOShakePosition(1.0f, 10, 10, 45, false, true);
     }
 }

@@ -27,19 +27,6 @@ public class DataLoader : MonoBehaviour
 
     private string[] textStrings = {"あ", "い", "う", "え", "お", "か", "き", "く","け" };
 
-    /*
-    public MojiPlateParameter LoadForSetMojiban(string themeMoji)
-    {
-        // string assetDataPath = "ExcelData/" + themeMoji;
-        string assetDataPath = "ExcelData/MojiDataGeneral";
-        // MojiPlateParameter mojiParam = Resources.Load(assetDataPath) as MojiPlateParameter;
-        MojiPlateParameter mojiParam = Resources.Load(assetDataPath) as MojiPlateParameter;
-        Debug.Log(mojiParam);
-
-        return mojiParam;
-    }
-    */
-
     public MojiDataGeneral LoadForSetMojiban(string themeMoji)
     {
         // string assetDataPath = "ExcelData/" + themeMoji;
