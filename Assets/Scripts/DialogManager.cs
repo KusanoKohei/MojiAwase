@@ -5,21 +5,28 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-    [SerializeField]
-    Text dialogText;
+    public Text dialogText;
 
+    #region Singleton
     public static DialogManager instance;
 
-    public void Awake()
+    private void Awake()
     {
         if(instance == null)
         {
             instance = this;
         }
     }
+    #endregion
 
-    public void HyoujiText(string text)
+    // Start is called before the first frame update
+    void Start()
     {
-        this.dialogText.text = text;
+
+    }
+
+    public void Test()
+    {
+        dialogText.text = "ゲームの開始です";
     }
 }

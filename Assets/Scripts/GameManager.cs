@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Text;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     public List<string> mojiList;
     public List<GameObject> mojiImgList;
 
-    public Button mojiPlate;
-    public Text mojiText;
+    public MojiPlate mojiPlate;
+
+    [SerializeField]
+    private string themeMoji;
 
     public static GameManager instance;
 
@@ -32,23 +35,44 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Sprite spritePath = Resources.Load("Sprites/" + "animal_alpaca_huacaya") as Sprite;
-        // mojiImgList[0].GetComponent<Image>().sprite = spritePath);
+        mojiPlate = FindObjectOfType<MojiPlate>();
+        themeMoji = mojiPlate.SetMojiPlate();
+        
+        SetMojiBan.instance.SortFromMojiData(themeMoji);
         OnClick();
     }
-
     
-    private void SetMojiPlate()
-    {
-        int number = Random.Range(0, mojiList.Count);
-        number = 0; // デバッグ用.
-        mojiText.text = mojiList[number].ToString();
-        
-    }
-
     public void OnClick()
     {
-        SetMojiPlate();
-        SetMojiBan.instance.DividRank(DataLoader.instance.LoadForSetMojiban(mojiText));
+        //SetMojiBan.instance.DividRank(DataLoader.instance.LoadForSetMojiban(themeMoji));
+    }
+
+    public MojiDataGeneral MojiDataLoad()
+    {
+        string assetDataPath = "ExcelData/MojiDataGeneral";
+
+        MojiDataGeneral mojiParam = Resources.Load(assetDataPath) as MojiDataGeneral;
+
+        return mojiParam;
+    }
+
+   
+
+    static internal string KatakanaConvert(string themeMoji)
+    {
+        // themeMojiの先頭一文字をstring型からchar型に変換.
+        char charMoji = themeMoji[0];
+        
+
+        StringBuilder sb = new StringBuilder();
+        
+
+        if(charMoji >= 'あ' && charMoji <= 'ん')
+        {//-> カタカナの範囲.
+            charMoji = (char)(charMoji + 0x0060);   // 変換.
+        }
+        sb.Append(charMoji);
+
+        return sb.ToString();
     }
 }

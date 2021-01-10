@@ -22,12 +22,22 @@ public class SetMojiBan : MonoBehaviour
 
     #endregion
 
-    private MojiPlateParameter mojiParam;
+    // private MojiPlateParameter mojiParam;
 
-    List<int> numOfRank0 = new List<int>();
-    List<int> numOfRank1 = new List<int>();
-    List<int> numOfRank2 = new List<int>();
-    
+
+    [SerializeField]
+    private List<SelectedMojiPlate> rank0List;
+    [SerializeField]
+    private List<SelectedMojiPlate> rank1List;
+    [SerializeField]
+    private List<SelectedMojiPlate> rank2List;
+
+    public char myChar;
+    public char myThemeMoji;
+    public char myKatakana;
+
+    private MojiDataGeneral mojiParam;
+
     [SerializeField]
     public int rank0_kazu;
     [SerializeField]
@@ -36,15 +46,20 @@ public class SetMojiBan : MonoBehaviour
     public int rank2_kazu;
 
     [SerializeField]
+    // List<SelectedMojiPlate> selectedRank0 = new List<SelectedMojiPlate>();
     List<SelectedMojiPlate> selectedRank0 = new List<SelectedMojiPlate>();
     [SerializeField]
+    // List<SelectedMojiPlate> selectedRank1 = new List<SelectedMojiPlate>();
     List<SelectedMojiPlate> selectedRank1 = new List<SelectedMojiPlate>();
     [SerializeField]
+    // List<SelectedMojiPlate> selectedRank2 = new List<SelectedMojiPlate>();
     List<SelectedMojiPlate> selectedRank2 = new List<SelectedMojiPlate>();
-    
+
+    [SerializeField]
+    List<string> selectedSprite = new List<string>();
     [SerializeField]
     List<SelectedMojiPlate> summarySelected;
-
+    
     public List<int> integralNum = new List<int>();
     public List<int> randomNum = new List<int>();
 
@@ -52,35 +67,203 @@ public class SetMojiBan : MonoBehaviour
 
     GameManager gameManager => GameManager.instance;
 
-    
-    public void DividRank(MojiPlateParameter mojiParam)
+    public void SortFromMojiData(string themeMoji)
     {
-        ResetMojiBan();
+        mojiParam = gameManager.MojiDataLoad();
+        // themeMoji を参照し、Rank_0_Text_0とRank_0_Text_1から、頭文字がthemeMojiと一致するものを定数文拾う.
+        string kataMoji = GameManager.KatakanaConvert(themeMoji);
 
-        foreach (var param in mojiParam.param)
+        foreach (var list in mojiParam.sheets[0].list)
         {
-            if (param.Rank == 0)
+            // Debug.Log("リソースから参照されたリストに入る名前は、" + list.Rank_0_Text_0.ToString());
+
+            // themeMojiのひらがなとカタカナの二つを引数に、listを検索.
+
+            myThemeMoji = themeMoji[0];
+            myKatakana = kataMoji[0];
+
+
+            // まずはリスト全体から、テキストの先頭の文字を参照し、
+            // お題の文字に対してランクごとに選別し、IDを登録する。
+            if (list.Rank_0_Text_0 != "")
             {
-                numOfRank0.Add(mojiParam.param.IndexOf(param));
+                myChar = list.Rank_0_Text_0[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank0List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 0,
+                        sprite = list.Sprite,
+                        text = list.Rank_0_Text_0,
+                    });
+                }
             }
 
-            if (param.Rank == 1)
+            if (list.Rank_0_Text_1 != "")
             {
-                numOfRank1.Add(mojiParam.param.IndexOf(param));
+                myChar = list.Rank_0_Text_1[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank0List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 0,
+                        sprite = list.Sprite,
+                        text = list.Rank_0_Text_1,
+                    });
+                }
             }
 
-            if (param.Rank == 2)
+            if (list.Rank_1_Text_0 != "")
             {
-                numOfRank2.Add(mojiParam.param.IndexOf(param));
+                myChar = list.Rank_1_Text_0[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank1List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 1,
+                        sprite = list.Sprite,
+                        text = list.Rank_1_Text_0,
+                    });
+                }
+            }
+
+            if (list.Rank_1_Text_1 != "")
+            {
+                myChar = list.Rank_1_Text_1[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank1List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 1,
+                        sprite = list.Sprite,
+                        text = list.Rank_1_Text_1,
+                    });
+                }
+            }
+
+            if (list.Rank_1_Text_2 != "")
+            {
+                myChar = list.Rank_1_Text_2[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank1List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 1,
+                        sprite = list.Sprite,
+                        text = list.Rank_1_Text_2,
+                    });
+                }
+            }
+
+            if (list.Rank_1_Text_3 != "")
+            {
+                myChar = list.Rank_1_Text_3[0];
+
+                if (myThemeMoji == myChar || myKatakana == myChar)
+                {
+                    rank1List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 1,
+                        sprite = list.Sprite,
+                        text = list.Rank_1_Text_3,
+                    });
+                }
+            }
+
+            if (list.Rank_2_Text != "")
+            {
+                myChar = list.Rank_2_Text[0];
+
+                if (myThemeMoji != myChar || myKatakana != myChar)
+                {
+                    rank2List.Add(new SelectedMojiPlate()
+                    {
+                        id = list.ID,
+                        rank = 2,
+                        sprite = list.Sprite,
+                        text = list.Rank_2_Text,
+                    });
+                }
             }
         }
         
-        ChusenRank0(mojiParam);
-        ChusenRank1(mojiParam);
-        ChusenRank2(mojiParam);
+        ChusenRank0();
+        ChusenRank1();
+        ChusenRank2();
 
         SortMojiBan();
     }
+
+    private void ChusenRank0()
+    {
+        for (int i = 0; i < rank0_kazu; i++)
+        {
+            int r = Random.Range(0, rank0List.Count);
+            
+            selectedRank0.Add(rank0List[r]);
+            selectedSprite.Add(rank0List[r].sprite);
+        }
+    }
+
+    private void ChusenRank1()
+    {
+        for (int i = 0; i < rank1_kazu; i++)
+        {
+            int r = Random.Range(0, rank1List.Count);
+            selectedRank1.Add(rank1List[r]);
+            selectedSprite.Add(rank1List[r].sprite);
+
+            i += CheckDaburi(i, selectedRank1[i].id, selectedRank1);
+        }
+    }
+
+    private void ChusenRank2()
+    {
+        for (int i = 0; i < rank2_kazu; i++)
+        {
+            int r = Random.Range(0, rank2List.Count);
+            
+            selectedRank2.Add(rank2List[r]);
+            selectedSprite.Add(rank2List[r].sprite);
+
+            i += CheckDaburi(i, selectedRank2[i].id, selectedRank2);
+            // numOfRank2.RemoveAt(r); // 選択された要素がだぶらないように選択された要素を省く.
+        }
+    }
+
+
+    private int CheckDaburi(int num, int id, List<SelectedMojiPlate> selectedRank)
+    {
+        if (num >= 1)
+        {
+            foreach (var sec in selectedSprite)
+            {
+                for (int i = 0; i < selectedRank.Count - 1; i++)
+                {
+                    if (id == selectedRank[i].id || selectedRank[i].sprite == sec)
+                    {
+                        //Debug.Log("重複しました");
+                        selectedRank.RemoveAt(num);
+                        // selectedSprite.RemoveAt(selectedSprite.Count-1);
+                        return -1;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
 
     private void SortMojiBan()
     {
@@ -104,23 +287,23 @@ public class SetMojiBan : MonoBehaviour
         
         foreach(var sec in selectedRank0)
         {
-            summarySelected.Add(new SelectedMojiPlate()
-                { id = sec.id, rank = sec.rank, sprite = sec.sprite, text = sec.text});
-        }
-        foreach(var sec in selectedRank1)
-        {
-            summarySelected.Add(new SelectedMojiPlate()
-            { id = sec.id, rank = sec.rank, sprite = sec.sprite, text = sec.text });
-        }
-        foreach(var sec in selectedRank2)
-        {
-            summarySelected.Add(new SelectedMojiPlate()
-            { id = sec.id, rank = sec.rank, sprite = sec.sprite, text = sec.text });
+            summarySelected.Add(sec);
         }
 
+        foreach(var sec in selectedRank1)
+        {
+            summarySelected.Add(sec);
+        }
+
+        foreach(var sec in selectedRank2)
+        {
+            summarySelected.Add(sec);
+        }
+
+        
         for(int i=0; i<summarySelected.Count; i++)
         {
-            Debug.Log(randomNum[i]);
+            //Debug.Log(randomNum[i]);
             summarySelected[i].junban = randomNum[i];
         }
 
@@ -132,100 +315,28 @@ public class SetMojiBan : MonoBehaviour
             {
                 if (i == summarySelected[j].junban)
                 {
-                    MojiButton mojiButton = gameManager.mojiImgList[i].GetComponent<MojiButton>();
+                    MojiSlot mojiSlot = gameManager.mojiImgList[i].GetComponent<MojiSlot>();
 
-                    mojiButton.id = summarySelected[j].id;
+                    mojiSlot.id = summarySelected[j].id;
 
-                    mojiButton.rank = summarySelected[j].rank;
+                    mojiSlot.rank = summarySelected[j].rank;
 
                     // Debug.Log("ロードしたスプライトのパスは、" + Resources.Load("Sprites/" + summarySelected[j].sprite).name);
                     gameManager.mojiImgList[i].GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/" + summarySelected[j].sprite);
                     
                     Text mojiText = gameManager.mojiImgList[i].GetComponentInChildren<Text>();
                     mojiText.text = summarySelected[j].text;
-                    mojiButton.dialogText = mojiText.text;
+                    mojiSlot.dialogText = mojiText.text;
                     // Debug.Log(j + "番目のボタンのテキストは" + mojiButton.dialogText + "であり、しかし表示されているテキストは" + mojiText.text);
-                    
-
+                
                 }
             }
         }
     }
-    
-
-    private void ChusenRank0(MojiPlateParameter mojiParam)
-    {
-        for (int i = 0; i < rank0_kazu; i++)
-        {
-            int r = Random.Range(0, numOfRank0.Count);
-            int num = numOfRank0[r];
-            
-            selectedRank0.Add(new SelectedMojiPlate()
-                { id = mojiParam.param[num].ID,
-                  rank = mojiParam.param[num].Rank,
-                  sprite = mojiParam.param[num].Sprite,
-                  text = mojiParam.param[num].Text });
-        }
-    }
-
-    private void ChusenRank1(MojiPlateParameter mojiParam)
-    {
-        for (int i = 0; i < rank1_kazu; i++)
-        {
-            int r = Random.Range(0, numOfRank1.Count);
-            int num = numOfRank1[r];
-            
-            selectedRank1.Add(new SelectedMojiPlate()
-                { id = mojiParam.param[num].ID,
-                  rank = mojiParam.param[num].Rank,
-                  sprite = mojiParam.param[num].Sprite,
-                  text = mojiParam.param[num].Text });
-
-            i += CheckDaburi(i, selectedRank1[i].id, selectedRank1);
-        }
-    }
-
-    private void ChusenRank2(MojiPlateParameter mojiParam)
-    {
-        for (int i = 0; i < rank2_kazu; i++)
-        {
-            int r = Random.Range(0, numOfRank2.Count);
-            int num = numOfRank2[r];
-            
-            selectedRank2.Add(new SelectedMojiPlate()
-                { id = mojiParam.param[num].ID,
-                  rank = mojiParam.param[num].Rank,
-                  sprite = mojiParam.param[num].Sprite,
-                  text = mojiParam.param[num].Text });
-
-            i += CheckDaburi(i, selectedRank2[i].id, selectedRank2);
-            // numOfRank2.RemoveAt(r); // 選択された要素がだぶらないように選択された要素を省く.
-        }
-    }
-
-    private int CheckDaburi(int num, int id, List<SelectedMojiPlate> selected)
-    {
-        if(num >= 1)
-        {
-            for (int i = 0; i < selected.Count - 1; i++)
-            {
-                if (id == selected[i].id)
-                {
-                    Debug.Log("重複しました");
-                    selected.RemoveAt(num);
-                    return -1;
-                }
-            }
-        }
-
-        return 0;
-    }
+   
 
     private void ResetMojiBan()
     {
-        numOfRank0.Clear();
-        numOfRank1.Clear();
-        numOfRank2.Clear();
         selectedRank0.Clear();
         selectedRank1.Clear();
         selectedRank2.Clear();
@@ -234,6 +345,5 @@ public class SetMojiBan : MonoBehaviour
 
         integralNum.Clear();
         randomNum.Clear();
-
     }
 }

@@ -19,7 +19,7 @@ MonoBehaviour:
     Text: "\u30A2\u30C3\u30D7\u30EB"
   - ID: 2
     Rank: 0
-    Sprite: food_ham_egg
+    Sprite: food_bacon_egg
     Text: "\u671D\u306E\u5B9A\u756A"
   - ID: 3
     Rank: 0
@@ -47,8 +47,8 @@ MonoBehaviour:
     Text: "\u30A2\u30EB\u30D1\u30AB"
   - ID: 9
     Rank: 2
-    Sprite: takoyaki_ki
-    Text: "\u305F\u3053\u713C\u304D"
+    Sprite: food_omelet
+    Text: "\u30AA\u30E0\u30EC\u30C4"
   - ID: 10
     Rank: 2
     Sprite: tanbo
@@ -71,7 +71,7 @@ MonoBehaviour:
     Text: "\u3059\u304D\u713C\u304D"
   - ID: 15
     Rank: 2
-    Sprite: food_omisoshiru
+    Sprite: food_misoshiru_toufu_wakame
     Text: "\u307F\u305D\u6C41"
   - ID: 16
     Rank: 2
