@@ -212,7 +212,6 @@ public class SetMojiBan : MonoBehaviour
             int r = Random.Range(0, rank0List.Count);
             
             selectedRank0.Add(rank0List[r]);
-            selectedSprite.Add(rank0List[r].sprite);
         }
     }
 
@@ -222,8 +221,7 @@ public class SetMojiBan : MonoBehaviour
         {
             int r = Random.Range(0, rank1List.Count);
             selectedRank1.Add(rank1List[r]);
-            selectedSprite.Add(rank1List[r].sprite);
-
+            
             i += CheckDaburi(i, selectedRank1[i].id, selectedRank1);
         }
     }
@@ -235,8 +233,7 @@ public class SetMojiBan : MonoBehaviour
             int r = Random.Range(0, rank2List.Count);
             
             selectedRank2.Add(rank2List[r]);
-            selectedSprite.Add(rank2List[r].sprite);
-
+            
             i += CheckDaburi(i, selectedRank2[i].id, selectedRank2);
             // numOfRank2.RemoveAt(r); // 選択された要素がだぶらないように選択された要素を省く.
         }
@@ -247,17 +244,13 @@ public class SetMojiBan : MonoBehaviour
     {
         if (num >= 1)
         {
-            foreach (var sec in selectedSprite)
+            for (int i = 0; i < selectedRank.Count - 1; i++)
             {
-                for (int i = 0; i < selectedRank.Count - 1; i++)
+                if (id == selectedRank[i].id)
                 {
-                    if (id == selectedRank[i].id || selectedRank[i].sprite == sec)
-                    {
-                        //Debug.Log("重複しました");
-                        selectedRank.RemoveAt(num);
-                        // selectedSprite.RemoveAt(selectedSprite.Count-1);
-                        return -1;
-                    }
+                    Debug.Log("重複しました");
+                    selectedRank.RemoveAt(num);
+                    return -1;
                 }
             }
         }
