@@ -77,9 +77,7 @@ public class GameManager : MonoBehaviour
         rp_correctCount.ObserveEveryValueChanged(_ => _.Value)
             .Where(_ => _ >= clearCount)
             .Subscribe(_=> {
-                Debug.Log("クリア条件達成です");
-                AudioManager.instance.audioSource.Stop();
-                AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[4]);
+                StartCoroutine(GameEvent.instance.StageClearEvent());
                 });
 
 
@@ -88,7 +86,9 @@ public class GameManager : MonoBehaviour
     
     public void OnClick()
     {
+        Debug.Log("ゲーム開始時に初期化しました");
         rp_currentScore.Value = 0;
+        rp_correctCount.Value = 0;
 
         mojiPlate = FindObjectOfType<MojiPlate>();
         themeMoji = mojiPlate.SetMojiPlate();
