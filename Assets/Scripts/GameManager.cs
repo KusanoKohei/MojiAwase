@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 using System.Linq;
+using UniRx;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,18 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private string themeMoji;
+
+    public Text currentScoreText;
+    public static ReactiveProperty<int> rp_currentScore = new ReactiveProperty<int>(0);
+
+    public Text highScoreText;
+    public static ReactiveProperty<int> rp_highScore = new ReactiveProperty<int>(0);
+
+    public Text correctCount;
+    public static ReactiveProperty<int> rp_correctCount = new ReactiveProperty<int>(0);
+
+    [SerializeField]
+    private int clearCount = 3;
 
     public static GameManager instance;
 
@@ -38,17 +51,49 @@ public class GameManager : MonoBehaviour
         // 効果音；スタート.
         AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[0]);
 
+        // PlayerPrefのスコアをハイスコアの値に参照する.
+        // 後にハイスコアの値を表示させる値に反映させる.
+        rp_highScore.Value = PlayerPrefs.GetInt("HIGH_SCORE", 0);
+        highScoreText.text = rp_highScore.Value.ToString();
+
+        // 毎フレームごとに現在スコアの値をチェックし、
+        // 値が変動すれば表示させるスコアを変更する.
+        rp_currentScore.ObserveEveryValueChanged(_ => _.Value)
+            .SubscribeToText(currentScoreText);
+        
+        rp_currentScore.ObserveEveryValueChanged(_ => _.Value)
+            .Where(_ => _ > rp_highScore.Value)
+            .Subscribe(_=> {
+                rp_highScore.Value = rp_currentScore.Value;
+                PlayerPrefs.SetInt("HIGH_SCORE", rp_highScore.Value);
+                }); 
+
+        rp_highScore.ObserveEveryValueChanged(_ => _.Value)
+            .SubscribeToText(highScoreText);
+
+        rp_correctCount.ObserveEveryValueChanged(_ => _.Value)
+            .SubscribeToText(correctCount);
+
+        rp_correctCount.ObserveEveryValueChanged(_ => _.Value)
+            .Where(_ => _ >= clearCount)
+            .Subscribe(_=> {
+                Debug.Log("クリア条件達成です");
+                AudioManager.instance.audioSource.Stop();
+                AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[4]);
+                });
+
+
         OnClick();
     }
     
     public void OnClick()
     {
+        rp_currentScore.Value = 0;
+
         mojiPlate = FindObjectOfType<MojiPlate>();
         themeMoji = mojiPlate.SetMojiPlate();
 
         SetMojiBan.instance.SortFromMojiData(themeMoji);
-
-        // SetMojiBan.instance.DividRank(DataLoader.instance.LoadForSetMojiban(themeMoji));
     }
 
     public MojiDataGeneral MojiDataLoad()
@@ -59,9 +104,7 @@ public class GameManager : MonoBehaviour
 
         return mojiParam;
     }
-
-   
-
+    
     static internal string KatakanaConvert(string themeMoji)
     {
         // themeMojiの先頭一文字をstring型からchar型に変換.
@@ -78,5 +121,11 @@ public class GameManager : MonoBehaviour
         sb.Append(charMoji);
 
         return sb.ToString();
+    }
+
+    public void DataReset()
+    {
+        PlayerPrefs.DeleteKey("HIGH_SCORE");
+        Debug.Log("ハイスコアキーを削除しました");
     }
 }

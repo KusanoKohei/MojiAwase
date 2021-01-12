@@ -100,6 +100,8 @@ public class MojiPlate : MonoBehaviour,IBeginDragHandler, IDragHandler,IDropHand
             {
                 Debug.Log("Excellent !!");
 
+                GameManager.rp_correctCount.Value += 1;
+                GameManager.rp_currentScore.Value += 30;
                 AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[3]); // 1020.
                 DialogManager.instance.dialogText.text = "大正解！";
             }
@@ -107,6 +109,8 @@ public class MojiPlate : MonoBehaviour,IBeginDragHandler, IDragHandler,IDropHand
             {
                 Debug.Log("Correct");
 
+                GameManager.rp_correctCount.Value += 1;
+                GameManager.rp_currentScore.Value += 10;
                 AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[1]); // 0007.
                 DialogManager.instance.dialogText.text = "せいか～い";
             }
@@ -114,6 +118,7 @@ public class MojiPlate : MonoBehaviour,IBeginDragHandler, IDragHandler,IDropHand
             {
                 Debug.Log("incorrect lol");
 
+                GameManager.rp_currentScore.Value += 0;
                 AudioManager.instance.audioSource.PlayOneShot(AudioManager.instance.voiceClips[2]); // 1243.
                 DialogManager.instance.dialogText.text = "それじゃない!!! lol";
 
